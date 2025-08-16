@@ -27,38 +27,39 @@ public class UserController : ControllerBase
         var databaseOutput = _db.userRegistrationInformations.Where(u => u.emailAdress == userRegistrationInformationsDTO.emailAdress).ToList();
         if (databaseOutput.Count != 0)
         {
-            System.Console.WriteLine("userName already exists");
             return StatusCode(StatusCodes.Status409Conflict);
         }
-            UserRegistrationInformations authentication = new UserRegistrationInformations()
+        UserRegistrationInformations userRegistrationInformations = new UserRegistrationInformations()
         {
-            username = userWorkingDTO.username,
-            password = userWorkingDTO.password
+            emailAdress = userRegistrationInformationsDTO.emailAdress,
+            telefonNumber = userRegistrationInformationsDTO.telefonNumber,
+            password = userRegistrationInformationsDTO.password
         };
 
-        _db.user.Add(authentication);
+        _db.userRegistrationInformations.Add(userRegistrationInformations);
         _db.SaveChanges();
 
-        return StatusCode(StatusCodes.Status201Created, authentication);
+        return StatusCode(StatusCodes.Status201Created, userRegistrationInformations);
     }
     [HttpPost("Login")]
-    public ActionResult<UserRegistrationInformations> Login([FromBody] UserWorkingDTO userWorkingDTO)
+    public ActionResult<UserRegistrationInformations> Login([FromBody] UserRegistrationInformationsDTO userRegistrationInformationsDTO)
     {
-        var authentication = _db.user.FirstOrDefault(u => u.username == userWorkingDTO.username && u.password == userWorkingDTO.password);
-        userWorkingDTO.id = authentication.id.ToString();
-        User comparedAuthentication = new User()
+        var authentication = _db.userRegistrationInformations.FirstOrDefault(u => u.emailAdress == userRegistrationInformationsDTO.emailAdress && u.password == userRegistrationInformationsDTO.password && u.telefonNumber == userRegistrationInformationsDTO.telefonNumber);
+        userRegistrationInformationsDTO.id = authentication.id.ToString();
+        UserRegistrationInformations comparedUserrRegistrationInformations = new UserRegistrationInformations()
         {
-            username = userWorkingDTO.username,
-            password = userWorkingDTO.password,
+            emailAdress = userRegistrationInformationsDTO.emailAdress,
+            telefonNumber = userRegistrationInformationsDTO.telefonNumber,
+            password = userRegistrationInformationsDTO.password
         };
 
         if (authentication!= null)
         {
-            new Claim(ClaimTypes.NameIdentifier, userWorkingDTO.id);
+            new Claim(ClaimTypes.NameIdentifier, userRegistrationInformationsDTO.id);
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"] ?? ""));
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, userWorkingDTO.id),
+                new Claim(ClaimTypes.NameIdentifier, userRegistrationInformationsDTO.id),
             };
             var jwtToken = new JwtSecurityToken(
               expires: DateTime.Now.AddMinutes(15),

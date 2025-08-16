@@ -115,3 +115,4 @@ C:\Users\giuse\Dating_App\CatchUp\obj\Debug\net8.0\refint\CatchUp.dll
 C:\Users\giuse\Dating_App\CatchUp\obj\Debug\net8.0\CatchUp.pdb
 C:\Users\giuse\Dating_App\CatchUp\obj\Debug\net8.0\CatchUp.genruntimeconfig.cache
 C:\Users\giuse\Dating_App\CatchUp\obj\Debug\net8.0\ref\CatchUp.dll
+C:\Users\giuse\Dating_App\CatchUp\obj\Debug\net8.0\CatchUp.sourcelink.json
